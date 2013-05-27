@@ -12,7 +12,7 @@ public class TextPixelFilter {
 		int imgH = img.getHeight();
 		for(int y=0; y<imgH; y++) {
 			for(int x=0; x<imgW; x++) {
-				if(img.getRGB(x, y) == 0x000000)
+				if(isBlack(img.getRGB(x, y)))
 					return true;
 			}
 		}

@@ -26,9 +26,13 @@ public class FolderIndexer {
 					File tmpImgFile = new File("temp.jpg");
 					ImageIO.write(img, "jpg", tmpImgFile);
 					String deText = TesseractWrapper.extractText("temp.jpg", "deu");
-					String enText = TesseractWrapper.extractText("temp.jpg", "en");
+					String enText = TesseractWrapper.extractText("temp.jpg", "eng");					
+					Meme nmeme = new Meme(f.getPath(), deText, enText);
+					if(deText.trim().length() > 0 || enText.trim().length() > 0) {
+						memes.add(nmeme);
+						System.out.println("Added meme: " + nmeme);
+					}
 					tmpImgFile.delete();
-					memes.add(new Meme(f.getPath(), deText, enText));
 				}
 			}
 		}
@@ -37,7 +41,7 @@ public class FolderIndexer {
 	}
 	
 	private static boolean isImgFile(String fname) {
-		final String[] imgExtensions = new String[] {"jpg", "png"};
+		final String[] imgExtensions = new String[] {"jpg"};
 		for(String ext : imgExtensions) {
 			if(fname.endsWith(ext))
 				return true;
@@ -46,11 +50,11 @@ public class FolderIndexer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		List<Meme> memes = indexFolder("C:\\Users\\Andre\\Dropbox\\Public\\b");
+		List<Meme> memes = indexFolder("C:\\Users\\Andre\\Dropbox\\Public\\b"/*"C:\\Users\\Andre\\Dropbox\\Code\\MemeTextExtractor"*/);
 		for(Meme m : memes) {
 			System.out.println(m);
 		}
-		MemeSerialization.serializeMemes(memes);
+		MemeSerialization.serializeMemes(memes, new File("memes.json"));
 	}
 
 }
