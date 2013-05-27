@@ -9,16 +9,20 @@ public class TextPixelFilter {
 	
 	public static boolean containsText(BufferedImage img) {
 		int imgW = img.getWidth();
-		int imgH = img.getHeight();
-		for(int y=0; y<imgH; y++) {
-			for(int x=0; x<imgW; x++) {
+		int imgH = img.getHeight();		
+		return textInRect(img, 0, imgW, 0, (int)(imgH/3.0f)) && textInRect(img, 0, imgW, (int)(2.0f/3.0f*imgH), imgH);
+	}
+	
+	private static boolean textInRect(BufferedImage img, int startX, int endX, int startY, int endY) {
+		for(int y=startY; y<endY; y++) {
+			for(int x=startX; x<endX; x++) {
 				if(isBlack(img.getRGB(x, y)))
 					return true;
 			}
-		}
+		}			
 		return false;
 	}
-	
+
 	public static BufferedImage extractTextPixels(File imgFile) throws Exception {
 		BufferedImage srcImg = ImageIO.read(imgFile);
 		int imgW = srcImg.getWidth();
